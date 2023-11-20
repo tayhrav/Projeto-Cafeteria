@@ -4,9 +4,10 @@ public enum Tamanho {
     GRANDE;
 
     @Override
-	public String toString() {
-		return this.name().toLowerCase();
-	}
+    public String toString() {
+        String name = this.name().toLowerCase();
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
+    }
 
     public static Tamanho obterTamanho(String valor) {
         switch (valor.toLowerCase()) {
@@ -14,8 +15,10 @@ public enum Tamanho {
                 return PEQUENO;
             case "m":
                 return MEDIO;
-            default:
+            case "g":
                 return GRANDE;
+            default:
+                return null;
         }
     }
 }

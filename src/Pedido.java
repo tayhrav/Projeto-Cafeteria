@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Pedido {
     private int idPedido;
@@ -16,7 +15,11 @@ public class Pedido {
     }
 
     public List<ItemPedido> getItens() {
-        return this.itens; 
+        return this.itens;
+    }
+
+    public int getIdPedido() {
+        return this.idPedido;
     }
 
     public double calcularTotal() {
@@ -28,8 +31,7 @@ public class Pedido {
     }
 
     public void exibirPedido() {
-        System.out.println("Pedido " + this.idPedido);
-        // System.out.println("Itens: ");
+        System.out.println("Pedido #" + this.idPedido);
         for (ItemPedido item : this.itens) {
             System.out.println(item);
         }

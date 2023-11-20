@@ -1,12 +1,11 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Bebida extends Produto {
     private Tamanho tamanho;
     private Map<Tamanho, Double> precos;
 
     public Bebida(String nome) {
-        super(nome, 0); // O preço inicial é 0
+        super(nome, 0);
         this.precos = new HashMap<>();
     }
 
@@ -14,12 +13,12 @@ public class Bebida extends Produto {
         return this.tamanho;
     }
 
-    public void setTamanho(Tamanho tamanho){
+    public void setTamanho(Tamanho tamanho) {
         this.tamanho = tamanho;
     }
 
     public double getPreco(Tamanho tamanho) {
-        return this.precos.getOrDefault(tamanho, 0.0); // Retorna 0 se o tamanho não existir
+        return this.precos.getOrDefault(tamanho, 0.0);
     }
 
     public void adicionarPreco(Tamanho tamanho, double preco) {

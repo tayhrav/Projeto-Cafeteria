@@ -20,46 +20,48 @@ public class Menu {
     for (int i = 0; i < this.lanches.size(); i++) {
       Lanche lanche = this.lanches.get(i);
       if (lanche.getNome().equalsIgnoreCase(nome)) {
-        return i + this.bebidas.size(); 
+        return i + this.bebidas.size();
       }
     }
 
-    return -1; 
+    return -1;
   }
 
   public Produto getProduto(int index) {
-    List<Bebida> bebidas = this.getBebidas();
-    List<Lanche> lanches = this.getLanches();
 
-    if (index >= 0 && index < bebidas.size()) {
-      return bebidas.get(index);
-    } else if (index >= bebidas.size() && index < bebidas.size() + lanches.size()) {
-      return lanches.get(index - bebidas.size());
+    if (index >= 0 && index < this.bebidas.size()) {
+      return this.bebidas.get(index);
+    } else if (index >= this.bebidas.size() && index < this.bebidas.size() + this.lanches.size()) {
+      return this.lanches.get(index - this.bebidas.size());
     } else {
       return null;
     }
   }
 
-  public void removerProduto(String nome) {
+  public void removerProduto(String nome) throws Exception {
+
     int index = getProdutoIndex(nome);
-    if (index != -1) {
-      if (index < this.bebidas.size()) {
-        this.bebidas.remove(index);
-      } else {
-        index -= this.bebidas.size();
-        this.lanches.remove(index);
-      }
+
+    if (index < this.bebidas.size()) {
+      this.bebidas.remove(index);
+    } else {
+      index -= this.bebidas.size();
+      this.lanches.remove(index);
     }
   }
 
-  public void adicionarBebida(Bebida bebida, double precoPequeno, double precoMedio, double precoGrande) {
+  public void adicionarBebida(Bebida bebida, double precoPequeno, double precoMedio, double precoGrande)
+      throws Exception {
+
     bebida.adicionarPreco(Tamanho.PEQUENO, precoPequeno);
     bebida.adicionarPreco(Tamanho.MEDIO, precoMedio);
     bebida.adicionarPreco(Tamanho.GRANDE, precoGrande);
+
     this.bebidas.add(bebida);
   }
 
-  public void adicionarLanche(Lanche lanche) {
+  public void adicionarLanche(Lanche lanche) throws Exception {
+
     this.lanches.add(lanche);
   }
 
@@ -71,18 +73,81 @@ public class Menu {
     return this.lanches;
   }
 
+  public void editarProduto(String nome, Map<String, Object> novosValores) throws Exception {
+    int index = getProdutoIndex(nome);
+
+    if (index != -1) {
+      Produto produto = getProduto(index);
+
+      if (produto instanceof Bebida) {
+        Bebida bebida = (Bebida) produto;
+        editarBebida(bebida, novosValores);
+      } else {
+        Lanche lanche = (Lanche) produto;
+        editarLanche(lanche, novosValores);
+      }
+    } else {
+      throw new Exception("Produto não encontrado no cardápio.");
+    }
+  }
+
+  private void editarBebida(Bebida bebida, Map<String, Object> novosValores) {
+    for (Map.Entry<String, Object> entry : novosValores.entrySet()) {
+      String atributo = entry.getKey();
+      Object valor = entry.getValue();
+
+      switch (atributo) {
+        case "nome":
+          bebida.setNome((String) valor);
+          break;
+        case "precoPequeno":
+          bebida.adicionarPreco(Tamanho.PEQUENO, (Double) valor);
+          break;
+        case "precoMedio":
+          bebida.adicionarPreco(Tamanho.MEDIO, (Double) valor);
+          break;
+        case "precoGrande":
+          bebida.adicionarPreco(Tamanho.GRANDE, (Double) valor);
+          break;
+      }
+    }
+  }
+
+  private void editarLanche(Lanche lanche, Map<String, Object> novosValores) {
+    for (Map.Entry<String, Object> entry : novosValores.entrySet()) {
+      String atributo = entry.getKey();
+      Object valor = entry.getValue();
+
+      switch (atributo) {
+        case "nome":
+          lanche.setNome((String) valor);
+          break;
+        case "preco":
+          lanche.setPreco((Double) valor);
+          break;
+        default:
+          System.out.println("Atributo desconhecido.");
+      }
+    }
+  }
+
   public void exibirMenu() {
-    System.out.println("Bebidas:");
-    for (Bebida bebida : this.bebidas) {
-      System.out.println(bebida.getNome());
-      for (Tamanho tamanho : Tamanho.values()) {
-        System.out.println("  " + tamanho + ": R$" + String.format("%.2f", bebida.getPreco(tamanho)));
+    System.out.println("CARDÁPIO");
+    if (!this.bebidas.isEmpty()) {
+      System.out.println("Bebidas:");
+      for (Bebida bebida : this.bebidas) {
+        System.out.println(bebida.getNome());
+        for (Tamanho tamanho : Tamanho.values()) {
+          System.out.println("  " + tamanho + ": R$" + String.format("%.2f", bebida.getPreco(tamanho)));
+        }
       }
     }
 
-    System.out.println("Lanches:");
-    for (Lanche lanche : this.lanches) {
-      System.out.println(lanche);
+    if (!this.lanches.isEmpty()) {
+      System.out.println("Lanches:");
+      for (Lanche lanche : this.lanches) {
+        System.out.println(lanche);
+      }
     }
   }
 }
