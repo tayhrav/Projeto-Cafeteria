@@ -28,7 +28,6 @@ public class Menu {
   }
 
   public Produto getProduto(int index) {
-
     if (index >= 0 && index < this.bebidas.size()) {
       return this.bebidas.get(index);
     } else if (index >= this.bebidas.size() && index < this.bebidas.size() + this.lanches.size()) {
@@ -38,8 +37,7 @@ public class Menu {
     }
   }
 
-  public void removerProduto(String nome) throws Exception {
-
+  public void removerProduto(String nome) {
     int index = getProdutoIndex(nome);
 
     if (index < this.bebidas.size()) {
@@ -50,9 +48,7 @@ public class Menu {
     }
   }
 
-  public void adicionarBebida(Bebida bebida, double precoPequeno, double precoMedio, double precoGrande)
-      throws Exception {
-
+  public void adicionarBebida(Bebida bebida, double precoPequeno, double precoMedio, double precoGrande) {
     bebida.adicionarPreco(Tamanho.PEQUENO, precoPequeno);
     bebida.adicionarPreco(Tamanho.MEDIO, precoMedio);
     bebida.adicionarPreco(Tamanho.GRANDE, precoGrande);
@@ -60,8 +56,7 @@ public class Menu {
     this.bebidas.add(bebida);
   }
 
-  public void adicionarLanche(Lanche lanche) throws Exception {
-
+  public void adicionarLanche(Lanche lanche) {
     this.lanches.add(lanche);
   }
 
@@ -73,7 +68,7 @@ public class Menu {
     return this.lanches;
   }
 
-  public void editarProduto(String nome, Map<String, Object> novosValores) throws Exception {
+  public void editarProduto(String nome, Map<String, Object> novosValores) {
     int index = getProdutoIndex(nome);
 
     if (index != -1) {
@@ -86,8 +81,6 @@ public class Menu {
         Lanche lanche = (Lanche) produto;
         editarLanche(lanche, novosValores);
       }
-    } else {
-      throw new Exception("Produto não encontrado no cardápio.");
     }
   }
 

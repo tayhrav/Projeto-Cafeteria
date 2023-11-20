@@ -25,14 +25,14 @@ public class Cafeteria {
         this.menu.exibirMenu();
     }
 
-    public int getIdPedido(int idPedido) {
+    public boolean verificaIdPedido(int idPedido) {
         for (Pedido pedido : this.pedidos) {
             if (pedido.getIdPedido() == idPedido) {
-                return pedido.getIdPedido();
+                return true;
             }
         }
 
-        return -1;
+        return false;
     }
 
     public ItemPedido getItem(String nome) {
@@ -48,11 +48,10 @@ public class Cafeteria {
     }
 
     public Pedido getPedido(int idPedido) {
-        int index = getIdPedido(idPedido);
-
-        if (index != -1) {
+        boolean valor = verificaIdPedido(idPedido);
+        if (valor) {
             for (Pedido pedido : this.pedidos) {
-                if (pedido.getIdPedido() == index) {
+                if (pedido.getIdPedido() == idPedido) {
                     return pedido;
                 }
             }
@@ -62,13 +61,20 @@ public class Cafeteria {
     }
 
     public void finalizarPedido(int idPedido) {
-        for (Pedido pedido : this.pedidos) {
-            if (pedido.getIdPedido() == idPedido) {
-                this.transacoes.add(new Transacao(pedido));
-                this.pedidos.remove(pedido);
-                return;
-            }
+        // for (Pedido pedido : this.pedidos) {
+        // if (pedido.getIdPedido() == idPedido) {
+        // this.transacoes.add(new Transacao(pedido));
+        // this.pedidos.remove(pedido);
+        // return;
+        // }
+        // }
+
+        Pedido pedido = getPedido(idPedido);
+        if (pedido != null) {
+            this.transacoes.add(new Transacao(pedido));
+            this.pedidos.remove(pedido);
         }
+
     }
 
     public void visualizarTransacoes() {

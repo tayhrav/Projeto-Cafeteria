@@ -139,9 +139,8 @@ public class MenuOp {
 
             Solver.print("Deseja adicionar mais algum item ao pedido? (s/n): ");
             String resposta = Solver.input().toLowerCase();
-            if (!resposta.equals("s")) {
+            if (!resposta.equals("s"))
                 break;
-            }
         }
 
         caf.realizarPedido(pedido);
@@ -160,7 +159,7 @@ public class MenuOp {
                 Solver.print("\nDigite o ID do pedido que deseja finalizar: ");
                 int idPedido = Integer.parseInt(Solver.input());
 
-                if (caf.getIdPedido(idPedido) == -1) {
+                if (caf.verificaIdPedido(idPedido)) {
                     throw new Exception("\nID não encontrado.\n");
                 }
 
@@ -180,21 +179,26 @@ public class MenuOp {
     public static void editarPedido(Cafeteria caf) {
         if (verificarPedidosVazio(caf))
             return;
+
         String nomeProduto;
         int idPedido;
 
         while (true) {
             Solver.println("Editar pedido");
+            System.out.println();
             caf.exibirPedidos();
 
-            Solver.print("\nDigite o ID do pedido que deseja editar: ");
-            idPedido = Integer.parseInt(Solver.input());
-
             try {
-                if (caf.getIdPedido(idPedido) == -1) {
+                Solver.print("\nDigite o ID do pedido que deseja editar: ");
+                idPedido = Integer.parseInt(Solver.input());
+
+                if (!caf.verificaIdPedido(idPedido)) {
                     throw new Exception("\nID não encontrado.\n");
                 }
+
                 break;
+            } catch (NumberFormatException e) {
+                Solver.println("\nInforme uma quantidade numérica, por favor.\n");
             } catch (Exception e) {
                 Solver.println(e.getMessage());
             }
@@ -208,12 +212,14 @@ public class MenuOp {
 
             ItemPedido item = caf.getItem(nomeProduto);
 
-            if (item == null) {
-                Solver.println("\nProduto não encontrado no pedido.");
-                continue;
+            try {
+                if (item == null) {
+                    throw new Exception("\nProduto não encontrado no pedido.");
+                }
+                break;
+            } catch (Exception e) {
+                Solver.println(e.getMessage());
             }
-
-            break;
         }
 
         while (true) {
@@ -313,107 +319,210 @@ public class MenuOp {
         }
     }
 
+    // public static void adicionarBebida(Cafeteria caf) {
+    //     String nomeBebida = null;
+
+    //     do {
+    //         try {
+    //             Solver.println("Adicionar bebida ao cardápio");
+    //             Solver.print("Nome: ");
+    //             nomeBebida = Solver.input();
+
+    //             if (!nomeBebida.matches("[a-zA-Z]+")) {
+    //                 throw new Exception("\nO nome da bebida deve conter apenas letras.\n");
+    //             }
+
+    //             if (caf.getMenu().getProdutoIndex(nomeBebida) != -1) {
+    //                 throw new Exception("\nJá existe uma bebida com esse nome no cardápio.\n");
+    //             }
+
+    //             break;
+    //         } catch (Exception e) {
+    //             Solver.println(e.getMessage());
+    //         }
+    //     } while (true);
+
+    //     do {
+    //         try {
+    //             Solver.print("Preço (tamanho pequeno): ");
+    //             Double precoP = Double.parseDouble(Solver.input());
+    //             if (precoP <= 0) {
+    //                 throw new Exception("\nInforme um preço maior que zero, por favor.\n");
+    //             }
+
+    //             Solver.print("Preço (tamanho médio): ");
+    //             Double precoM = Double.parseDouble(Solver.input());
+    //             if (precoM <= 0) {
+    //                 throw new Exception("\nInforme um preço maior que zero, por favor.\n");
+    //             }
+
+    //             Solver.print("Preço (tamanho grande): ");
+    //             Double precoG = Double.parseDouble(Solver.input());
+    //             if (precoG <= 0) {
+    //                 throw new Exception("\nInforme um preço maior que zero, por favor.\n");
+    //             }
+
+    //             caf.getMenu().adicionarBebida(new Bebida(nomeBebida), precoP, precoM, precoG);
+    //             Solver.println("\nBebida adicionada com sucesso!");
+
+    //             break;
+
+    //         } catch (NumberFormatException e) {
+    //             Solver.println("\nInforme preços válidos, por favor.\n");
+    //         } catch (Exception e) {
+    //             Solver.println(e.getMessage());
+    //         }
+    //     } while (true);
+
+    // }
+
     public static void adicionarBebida(Cafeteria caf) {
         String nomeBebida = null;
-
-        do {
+    
+        while (true) {
             try {
                 Solver.println("Adicionar bebida ao cardápio");
                 Solver.print("Nome: ");
                 nomeBebida = Solver.input();
-
+    
                 if (!nomeBebida.matches("[a-zA-Z]+")) {
                     throw new Exception("\nO nome da bebida deve conter apenas letras.\n");
                 }
-
+    
                 if (caf.getMenu().getProdutoIndex(nomeBebida) != -1) {
                     throw new Exception("\nJá existe uma bebida com esse nome no cardápio.\n");
                 }
-
+    
                 break;
             } catch (Exception e) {
                 Solver.println(e.getMessage());
             }
-        } while (true);
-
-        do {
+        }
+    
+        while (true) {
             try {
                 Solver.print("Preço (tamanho pequeno): ");
                 Double precoP = Double.parseDouble(Solver.input());
                 if (precoP <= 0) {
                     throw new Exception("\nInforme um preço maior que zero, por favor.\n");
                 }
-
+    
                 Solver.print("Preço (tamanho médio): ");
                 Double precoM = Double.parseDouble(Solver.input());
                 if (precoM <= 0) {
                     throw new Exception("\nInforme um preço maior que zero, por favor.\n");
                 }
-
+    
                 Solver.print("Preço (tamanho grande): ");
                 Double precoG = Double.parseDouble(Solver.input());
                 if (precoG <= 0) {
                     throw new Exception("\nInforme um preço maior que zero, por favor.\n");
                 }
-
+    
                 caf.getMenu().adicionarBebida(new Bebida(nomeBebida), precoP, precoM, precoG);
                 Solver.println("\nBebida adicionada com sucesso!");
-
+    
                 break;
-
+    
             } catch (NumberFormatException e) {
                 Solver.println("\nInforme preços válidos, por favor.\n");
             } catch (Exception e) {
                 Solver.println(e.getMessage());
             }
-        } while (true);
-
+        }
     }
+    
+
+    // public static void adicionarLanche(Cafeteria caf) {
+    //     String nomeLanche = null;
+
+    //     do {
+    //         try {
+    //             Solver.println("Adicionar lanche ao cardápio");
+    //             Solver.print("Nome: ");
+    //             nomeLanche = Solver.input();
+
+    //             if (!nomeLanche.matches("[a-zA-Z]+")) {
+    //                 throw new Exception("\nO nome do lanche deve conter apenas letras.\n");
+    //             }
+
+    //             if (caf.getMenu().getProdutoIndex(nomeLanche) != -1) {
+    //                 throw new Exception("\nJá existe um lanche com esse nome no cardápio.\n");
+    //             }
+
+    //             break;
+    //         } catch (Exception e) {
+    //             Solver.println(e.getMessage());
+    //         }
+    //     } while (true);
+
+    //     do {
+    //         try {
+    //             Solver.print("Preço: ");
+    //             Double preco = Double.parseDouble(Solver.input());
+
+    //             if (preco <= 0) {
+    //                 throw new Exception("\nInforme um preço maior que zero, por favor.\n");
+    //             }
+
+    //             caf.getMenu().adicionarLanche(new Lanche(nomeLanche, preco));
+
+    //             Solver.println("\nLanche adicionado com sucesso!");
+
+    //             break;
+    //         } catch (NumberFormatException e) {
+    //             Solver.println("\nInforme preços válidos, por favor.\n");
+    //         } catch (Exception e) {
+    //             Solver.println(e.getMessage());
+    //         }
+    //     } while (true);
+    // }
 
     public static void adicionarLanche(Cafeteria caf) {
         String nomeLanche = null;
-
-        do {
+    
+        while (true) {
             try {
                 Solver.println("Adicionar lanche ao cardápio");
                 Solver.print("Nome: ");
                 nomeLanche = Solver.input();
-
+    
                 if (!nomeLanche.matches("[a-zA-Z]+")) {
                     throw new Exception("\nO nome do lanche deve conter apenas letras.\n");
                 }
-
+    
                 if (caf.getMenu().getProdutoIndex(nomeLanche) != -1) {
                     throw new Exception("\nJá existe um lanche com esse nome no cardápio.\n");
                 }
-
+    
                 break;
             } catch (Exception e) {
                 Solver.println(e.getMessage());
             }
-        } while (true);
-
-        do {
+        }
+    
+        while (true) {
             try {
                 Solver.print("Preço: ");
                 Double preco = Double.parseDouble(Solver.input());
-
+    
                 if (preco <= 0) {
                     throw new Exception("\nInforme um preço maior que zero, por favor.\n");
                 }
-
+    
                 caf.getMenu().adicionarLanche(new Lanche(nomeLanche, preco));
-
+    
                 Solver.println("\nLanche adicionado com sucesso!");
-
+    
                 break;
             } catch (NumberFormatException e) {
                 Solver.println("\nInforme preços válidos, por favor.\n");
             } catch (Exception e) {
                 Solver.println(e.getMessage());
             }
-        } while (true);
+        }
     }
+    
 
     public static void removerProduto(Cafeteria caf) throws Exception {
         if (verificarCardapioVazio(caf))

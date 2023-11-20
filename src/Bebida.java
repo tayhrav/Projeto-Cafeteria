@@ -18,7 +18,7 @@ public class Bebida extends Produto {
     }
 
     public double getPreco(Tamanho tamanho) {
-        return this.precos.getOrDefault(tamanho, 0.0);
+        return this.precos.get(tamanho);
     }
 
     public void adicionarPreco(Tamanho tamanho, double preco) {
