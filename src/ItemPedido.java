@@ -34,6 +34,6 @@ public class ItemPedido {
 
     @Override
     public String toString() {
-        return this.produto + " - quantidade: " + this.quantidade;
+        return this.produto + " - Quantidade: " + this.quantidade;
     }
 }

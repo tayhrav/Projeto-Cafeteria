@@ -35,12 +35,14 @@ public class Cafeteria {
         return false;
     }
 
-    public ItemPedido getItem(String nome) {
+    public ItemPedido getItem(String nome, int idPedido) {
         for (Pedido pedido : this.pedidos) {
-            for (ItemPedido item : pedido.getItens()) {
+            if(pedido.getIdPedido() == idPedido){
+                for (ItemPedido item : pedido.getItens()) {
                 if (item.getProduto().getNome().equals(nome)) {
                     return item;
                 }
+            }
             }
         }
 
@@ -61,14 +63,6 @@ public class Cafeteria {
     }
 
     public void finalizarPedido(int idPedido) {
-        // for (Pedido pedido : this.pedidos) {
-        // if (pedido.getIdPedido() == idPedido) {
-        // this.transacoes.add(new Transacao(pedido));
-        // this.pedidos.remove(pedido);
-        // return;
-        // }
-        // }
-
         Pedido pedido = getPedido(idPedido);
         if (pedido != null) {
             this.transacoes.add(new Transacao(pedido));
@@ -79,7 +73,7 @@ public class Cafeteria {
 
     public void visualizarTransacoes() {
         if (this.transacoes.isEmpty()) {
-            Solver.println("Não há transações.");
+            Solver.println("\u001b[31mErro:\u001b[00m não há transações.");
             return;
         }
 
@@ -88,7 +82,7 @@ public class Cafeteria {
             transacao.exibirTransacao();
         }
 
-        Solver.println("\nTotal de dinheiro ganho: " + calcularTotalDinheiro());
+        Solver.println("\nTotal de dinheiro ganho: R$" + String.format("%.2f", calcularTotalDinheiro()));
     }
 
     public double calcularTotalDinheiro() {
@@ -103,13 +97,14 @@ public class Cafeteria {
         for (Map.Entry<String, Object> entry : novosValores.entrySet()) {
             String atributo = entry.getKey();
             Object valor = entry.getValue();
+            
 
             switch (atributo) {
                 case "produto":
-                    getItem(nome).setProduto((Produto) valor);
+                    getItem(nome, idPedido).setProduto((Produto) valor);
                     break;
                 case "quantidade":
-                    getItem(nome).setQuantidade((int) valor);
+                    getItem(nome, idPedido).setQuantidade((int) valor);
                     break;
             }
         }

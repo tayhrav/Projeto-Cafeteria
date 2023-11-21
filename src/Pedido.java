@@ -31,7 +31,7 @@ public class Pedido {
     }
 
     public void exibirPedido() {
-        System.out.println("Pedido #" + this.idPedido);
+        System.out.println("\u001b[37;1mPedido #" + this.idPedido + "\u001b[37;0m");
         for (ItemPedido item : this.itens) {
             System.out.println(item);
         }

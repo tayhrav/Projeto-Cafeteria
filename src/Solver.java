@@ -26,7 +26,7 @@ public class Solver {
                         print("\n");
                         break;
                     default:
-                        println("Comando inválido.");
+                        println("\u001b[31mErro:\u001b[00m opção inválida.\n");
                         break;
                 }
             } catch (Exception e) {

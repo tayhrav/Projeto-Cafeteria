@@ -127,7 +127,7 @@ public class Menu {
   public void exibirMenu() {
     System.out.println("CARDÁPIO");
     if (!this.bebidas.isEmpty()) {
-      System.out.println("Bebidas:");
+      System.out.println("\u001b[37;1mBebidas:\u001b[37;0m");
       for (Bebida bebida : this.bebidas) {
         System.out.println(bebida.getNome());
         for (Tamanho tamanho : Tamanho.values()) {
@@ -137,10 +137,11 @@ public class Menu {
     }
 
     if (!this.lanches.isEmpty()) {
-      System.out.println("Lanches:");
+      System.out.println("\u001b[37;1mLanches:\u001b[37;0m");
       for (Lanche lanche : this.lanches) {
         System.out.println(lanche);
       }
     }
   }
+
 }
