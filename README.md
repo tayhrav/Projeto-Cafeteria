@@ -1,6 +1,6 @@
 # Sistema de Gerenciamento de Cafeteria
 
-Este é um projeto desenvolvido para a disciplina de **Programação Orientada a Objetos**.
+Este é um projeto desenvolvido para a disciplina de Programação Orientada a Objetos.
 
 ## Funcionalidades
 
